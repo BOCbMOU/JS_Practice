@@ -1,9 +1,11 @@
-import mysqlSelect from './mysqlController';
+import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
 const getAllCategories = async (req, res, next) => {
   try {
-    mysqlSelect(res, 'select * from category');
+    const sql = `select * from category`;
+    const data = await makeQuery(sql);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
@@ -11,7 +13,9 @@ const getAllCategories = async (req, res, next) => {
 
 const getCategoryById = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from category where id=${req.params.id}`);
+    const sql = `select * from category where id=?`;
+    const data = await makeQuery(sql, req.params.id);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }

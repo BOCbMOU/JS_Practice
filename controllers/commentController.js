@@ -1,9 +1,11 @@
-import mysqlSelect from './mysqlController';
+import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
 const getAllComments = async (req, res, next) => {
   try {
-    mysqlSelect(res, 'select * from comment');
+    const sql = `select * from comment`;
+    const data = await makeQuery(sql);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
@@ -11,7 +13,9 @@ const getAllComments = async (req, res, next) => {
 
 const getCommentById = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from comment where id=${req.params.id}`);
+    const sql = `select * from comment where id=?`;
+    const data = await makeQuery(sql, req.params.id);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }

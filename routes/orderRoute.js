@@ -1,8 +1,9 @@
 import express from 'express';
-import indexAction from '../controllers/orderController';
+import { getAllOrders, getOrderById } from '../controllers/orderController';
 
 const router = express.Router();
 
-router.get('/', indexAction);
+router.get('/', getAllOrders);
+router.get('/orderId:orderId', getOrderById);
 
 export default router;

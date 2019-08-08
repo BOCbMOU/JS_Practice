@@ -1,16 +1,20 @@
-import mysqlSelect from './mysqlController';
+import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from user`);
+    const sql = `select * from user`;
+    const data = await makeQuery(sql);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
 };
 export const getUserById = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from user where id=${req.params.id}`);
+    const sql = `select * from user where id=?`;
+    const data = await makeQuery(sql, req.params.id);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }

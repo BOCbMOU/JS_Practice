@@ -1,9 +1,11 @@
-import mysqlSelect from './mysqlController';
+import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
 const getAllProducts = async (req, res, next) => {
   try {
-    mysqlSelect(res, 'select * from product_card');
+    const sql = `select * from product_card`;
+    const data = await makeQuery(sql);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
@@ -11,7 +13,9 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from product_card where id=${req.params.id}`);
+    const sql = `select * from product_card where id=?`;
+    const data = await makeQuery(sql, req.params.id);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
