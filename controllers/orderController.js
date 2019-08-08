@@ -13,8 +13,9 @@ const getAllOrders = async (req, res, next) => {
 
 const getOrderById = async (req, res, next) => {
   try {
+    const { orderId } = req.params;
     const sql = `select * from orders where id=?`;
-    const data = await makeQuery(sql, req.params.orderId);
+    const data = await makeQuery(sql, orderId);
     res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));

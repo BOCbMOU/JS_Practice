@@ -13,8 +13,9 @@ const getAllCategories = async (req, res, next) => {
 
 const getCategoryById = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const sql = `select * from category where id=?`;
-    const data = await makeQuery(sql, req.params.id);
+    const data = await makeQuery(sql, id);
     res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));

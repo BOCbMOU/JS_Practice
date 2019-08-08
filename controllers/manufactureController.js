@@ -13,8 +13,9 @@ export const getAllManufactures = async (req, res, next) => {
 
 export const getManufactureById = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const sql = `select * from manufacture where id=?`;
-    const data = await makeQuery(sql, req.params.id);
+    const data = await makeQuery(sql, id);
     res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));

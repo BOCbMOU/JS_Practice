@@ -13,8 +13,9 @@ const getAllComments = async (req, res, next) => {
 
 const getCommentById = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const sql = `select * from comment where id=?`;
-    const data = await makeQuery(sql, req.params.id);
+    const data = await makeQuery(sql, id);
     res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
@@ -23,7 +24,10 @@ const getCommentById = async (req, res, next) => {
 
 const getCommentsByProductId = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from comment where product_id=${req.params.productId}`);
+    const { productId } = req.params;
+    const sql = `select * from comment where id=?`;
+    const data = await makeQuery(sql, productId);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
@@ -31,7 +35,10 @@ const getCommentsByProductId = async (req, res, next) => {
 
 const getCommentsByUserId = async (req, res, next) => {
   try {
-    mysqlSelect(res, `select * from comment where user_id=${req.params.userId}`);
+    const { userId } = req.params;
+    const sql = `select * from comment where id=?`;
+    const data = await makeQuery(sql, userId);
+    res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }

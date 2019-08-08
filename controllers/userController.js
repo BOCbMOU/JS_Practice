@@ -12,8 +12,9 @@ export const getAllUsers = async (req, res, next) => {
 };
 export const getUserById = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const sql = `select * from user where id=?`;
-    const data = await makeQuery(sql, req.params.id);
+    const data = await makeQuery(sql, id);
     res.json(data);
   } catch (err) {
     next(new AppError(err.message, 400));
