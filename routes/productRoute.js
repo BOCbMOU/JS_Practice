@@ -1,8 +1,9 @@
 import express from 'express';
-import indexAction from '../controllers/productCardController';
+import { getAllProducts, getProductById } from '../controllers/productController';
 
 const router = express.Router();
 
-router.get('/', indexAction);
+router.get('/', getAllProducts);
+router.get('/id:id', getProductById);
 
 export default router;

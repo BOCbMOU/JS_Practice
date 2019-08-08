@@ -1,7 +1,7 @@
 import mysqlSelect from './mysqlController';
 import AppError from '../errors/AppError';
 
-const productCardControllerAction = async (req, res, next) => {
+const getAllProducts = async (req, res, next) => {
   try {
     mysqlSelect(res, 'select * from product_card');
   } catch (err) {
@@ -9,4 +9,12 @@ const productCardControllerAction = async (req, res, next) => {
   }
 };
 
-export default productCardControllerAction;
+const getProductById = async (req, res, next) => {
+  try {
+    mysqlSelect(res, `select * from product_card where id=${req.params.id}`);
+  } catch (err) {
+    next(new AppError(err.message, 400));
+  }
+};
+
+export { getAllProducts, getProductById };

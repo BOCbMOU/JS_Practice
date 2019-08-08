@@ -1,12 +1,9 @@
-import mysql from 'mysql';
+import mysqlSelect from './mysqlController';
 import AppError from '../errors/AppError';
 
-const logger = require('../utils/logger')('UserController');
-
 const homeControllerAction = async (req, res, next) => {
-  logger.log('info', `healthCheck: ${JSON.stringify(req.params)}`);
   try {
-    const connection = mysql.createConnection({
+    /* const connection = mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
@@ -17,7 +14,8 @@ const homeControllerAction = async (req, res, next) => {
       if (error) console.log(error);
       if (result) res.json(result);
     });
-    connection.end();
+    connection.end();// */
+    mysqlSelect(res, 'select * from category');
   } catch (err) {
     next(new AppError(err.message, 400));
   }
