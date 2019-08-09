@@ -32,10 +32,10 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-const modifyProduct = async (req, res, next) => {
+const createProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const created_at = new Date();
+    let created_at = new Date();
     let updated_at = null;
 
     if (id) {
@@ -43,9 +43,10 @@ const modifyProduct = async (req, res, next) => {
       if (data.length === 0) {
         return res.status(404).send('Unknown id');
       }
-
-      // created_at = data.created_at;
-      updated_at = new Date();
+      if (data[0].created_at) {
+        created_at = data[0].created_at;
+        updated_at = new Date();
+      }
     }
 
     const { body } = req;
@@ -88,4 +89,20 @@ const modifyProduct = async (req, res, next) => {
   }
 };
 
-export { getAllProducts, getProductById, modifyProduct };
+const deleteProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = await getProductFromDB(id);
+    if (data.length === 0) {
+      return res.status(404).send('Unknown id');
+    }
+
+    const sql = `delete from product_card where id=?`;
+    await makeQuery(sql, id);
+    res.status(202).send(data);
+  } catch (err) {
+    next(new AppError(err.message, 400));
+  }
+};
+
+export { getAllProducts, getProductById, createProduct, deleteProduct };
