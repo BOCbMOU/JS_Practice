@@ -15,7 +15,7 @@ const saveFile = async (req, res, next) => {
     }
 
     const newFileName = `img_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}-${now.getMilliseconds()}.${ext.pop()}`;
-    image.mv(`${__dirname}/../public/${newFileName}`);
+    image.mv(`${__dirname}/../public/images/${newFileName}`);
     res.status(201).send('ok');
   } catch (err) {
     next(new AppError(err.message, 400));
