@@ -44,4 +44,24 @@ const getCommentsByUserId = async (req, res, next) => {
   }
 };
 
-export { getAllComments, getCommentById, getCommentsByProductId, getCommentsByUserId };
+const addNewComment = async (req, res, next) => {
+  try {
+    const created_at = new Date();
+
+    const { body } = req;
+    const { title, text, user_id, product_id } = body;
+    const sql = 'insert into comment set ?';
+    const data = await makeQuery(sql, { title, text, user_id, product_id, created_at });
+    res.status(201).send(data);
+  } catch (err) {
+    next(new AppError(err.message, 400));
+  }
+};
+
+export {
+  getAllComments,
+  getCommentById,
+  getCommentsByProductId,
+  getCommentsByUserId,
+  addNewComment,
+};

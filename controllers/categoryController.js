@@ -22,4 +22,16 @@ const getCategoryById = async (req, res, next) => {
   }
 };
 
-export { getAllCategories, getCategoryById };
+const addNewCategory = async (req, res, next) => {
+  try {
+    const { body } = req;
+    const { title, description, category_id } = body;
+    const sql = 'insert into category set ?';
+    const data = await makeQuery(sql, { title, description, category_id });
+    res.status(201).send(data);
+  } catch (err) {
+    next(new AppError(err.message, 400));
+  }
+};
+
+export { getAllCategories, getCategoryById, addNewCategory };

@@ -1,11 +1,19 @@
 import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
+const getProductFromDB = id => {
+  const sql = `select * from product_card where id=?`;
+  return makeQuery(sql, id);
+};
+
 const getAllProducts = async (req, res, next) => {
   try {
     const sql = `select * from product_card`;
     const data = await makeQuery(sql);
-    res.json(data);
+    if (data.length > 0) {
+      res.json(data);
+    }
+    res.status(404).send('Page not found');
   } catch (err) {
     next(new AppError(err.message, 400));
   }
@@ -14,17 +22,34 @@ const getAllProducts = async (req, res, next) => {
 const getProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const sql = `select * from product_card where id=?`;
-    const data = await makeQuery(sql, id);
-    res.json(data);
+    const data = await getProductFromDB(id);
+    if (data.length > 0) {
+      res.json(data);
+    }
+    res.status(404).send('Page not found');
   } catch (err) {
     next(new AppError(err.message, 400));
   }
 };
 
-const addNewProduct = async (req, res, next) => {
+const modifyProduct = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    const created_at = new Date();
+    let updated_at = null;
+
+    if (id) {
+      const data = await getProductFromDB(id);
+      if (data.length === 0) {
+        return res.status(404).send('Unknown id');
+      }
+
+      // created_at = data.created_at;
+      updated_at = new Date();
+    }
+
     const { body } = req;
+    console.log(id, body);
     const {
       title,
       image,
@@ -37,8 +62,11 @@ const addNewProduct = async (req, res, next) => {
       discount,
       manufacture_id,
     } = body;
-    const sql =
-      'insert into product_card set ?';
+
+    const sql = `${id ? 'update' : 'insert into'} product_card set ?${
+      id ? ` where id = ${id}` : ''
+    }`;
+
     const data = await makeQuery(sql, {
       title,
       image,
@@ -50,13 +78,14 @@ const addNewProduct = async (req, res, next) => {
       vote,
       discount,
       manufacture_id,
+      created_at,
+      updated_at,
     });
-    res.status(201).send(data);
 
-    res.send('ok');
+    return id ? res.status(202).send(data) : res.status(201).send(data);
   } catch (err) {
     next(new AppError(err.message, 400));
   }
 };
 
-export { getAllProducts, getProductById, addNewProduct };
+export { getAllProducts, getProductById, modifyProduct };
