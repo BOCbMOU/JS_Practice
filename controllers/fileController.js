@@ -14,7 +14,7 @@ const saveFile = async (req, res, next) => {
     }
 
     const newFileName =
-      `img_${now.getDate()}-${`0${now.getMonth()}`.slice(-2)}-${now.getFullYear()}_` +
+      `img_${`0${now.getDate()}`.slice(-2)}-${`0${now.getMonth()}`.slice(-2)}-${now.getFullYear()}_` +
       `${now.getTime()}.${ext.pop()}`;
     file.mv(`${__dirname}/../public/files/${newFileName}`);
     res.status(201).send('ok');
