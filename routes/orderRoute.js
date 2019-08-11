@@ -1,5 +1,11 @@
 import express from 'express';
-import { getAllOrders, getOrderById, addNewOrder, updateOrder, deleteOrder } from '../controllers/orderController';
+import {
+  getAllOrders,
+  getOrderById,
+  addNewOrder,
+  updateOrder,
+  deleteOrder,
+} from '../controllers/orderController';
 
 const router = express.Router();
 

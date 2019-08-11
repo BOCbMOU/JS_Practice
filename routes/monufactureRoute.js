@@ -1,5 +1,11 @@
 import express from 'express';
-import { getAllManufactures, getManufactureById, addNewManufacture, updateManufacture, deleteManufacture } from '../controllers/manufactureController';
+import {
+  getAllManufactures,
+  getManufactureById,
+  addNewManufacture,
+  updateManufacture,
+  deleteManufacture,
+} from '../controllers/manufactureController';
 
 const router = express.Router();
 
