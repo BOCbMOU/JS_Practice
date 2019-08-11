@@ -1,4 +1,3 @@
-import makeQuery from '../services/mysqlConnection';
 import AppError from '../errors/AppError';
 
 const saveFile = async (req, res, next) => {

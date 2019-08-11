@@ -41,7 +41,7 @@ const createProduct = async (req, res, next) => {
     if (id) {
       const data = await getProductFromDB(id);
       if (data.length === 0) {
-        return res.status(404).send('Unknown id');
+            return res.status(404).send('Unknown id');
       }
       if (data[0].created_at) {
         created_at = data[0].created_at;
